@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADDA</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0d12;
+  color:white;
+}
+header{
+  padding:20px;
+  text-align:center;
+  font-size:30px;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+.logo{color:#ff6b4a}
+.subtitle{
+  text-align:center;
+  color:#aaa;
+  margin-bottom:20px;
+}
+.card{
+  margin:15px;
+  padding:20px;
+  border-radius:20px;
+  background:#151923;
+  border:1px solid #292f3c;
+}
+h2{margin-top:0}
+button{
+  border:0;
+  border-radius:12px;
+  padding:13px 20px;
+  background:#ff6848;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+}
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:70px;
+  background:#12151d;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid #292f3c;
+}
+.nav span{
+  color:#aaa;
+  font-size:13px;
+  text-align:center;
+}
+.nav .active{color:#ff6848}
+.icon{font-size:24px;display:block}
+</style>
+</head>
+
+<body>
+
+<header>
+  <span class="logo">ADDA</span>
+</header>
+
+<div class="subtitle">
+  Your place. Your people. Your stories.
+</div>
+
+<div class="card">
+  <h2>🔥 Welcome to ADDA</h2>
+  <p>Connect, create and share your world.</p>
+  <button onclick="alert('Create feature coming soon!')">
+    + Create
+  </button>
+</div>
+
+<div class="card">
+  <h2>✨ For You</h2>
+  <p>Discover short videos, stories and posts from your ADDA.</p>
+</div>
+
+<div class="card">
+  <h2>🎬 Short Videos</h2>
+  <p>Watch something interesting and share your vibe.</p>
+  <button onclick="alert('Short videos coming soon!')">
+    Watch Shorts
+  </button>
+</div>
+
+<div class="card">
+  <h2>📖 Stories</h2>
+  <p>Share your moments with your people.</p>
+</div>
+
+<div class="nav">
+  <span class="active">
+    <span class="icon">⌂</span>Home
+  </span>
+
+  <span>
+    <span class="icon">🔍</span>Explore
+  </span>
+
+  <span>
+    <span class="icon">＋</span>Create
+  </span>
+
+  <span>
+    <span class="icon">♡</span>Activity
+  </span>
+
+  <span>
+    <span class="icon">◯</span>Profile
+  </span>
+</div>
+
+</body>
+</html>
