@@ -419,7 +419,7 @@ function renderShorts(shorts) {
   }
   
   grid.innerHTML = shorts.map((short, index) => {
-    const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22250%22%3E%3Crect fill=%22%23292f3c%22 width=%22150%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2214%22 fill=%22%23555%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E📹%3C/text%3E%3C/svg%3E';
+    const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22250%22%3E%3Crect fill=%22%23292f3c%22 width=%22150%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2214%22 fill=%22%23666%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3ENo preview%3C/text%3E%3C/svg%3E';
     return `
       <div class="short-item" data-index="${index}">
         <img src="${short.thumbnail || placeholderSvg}" alt="${short.title}" onerror="this.src='${placeholderSvg}'">
@@ -429,14 +429,6 @@ function renderShorts(shorts) {
       </div>
     `;
   }).join('');
-  
-  // Add click event listeners to short items
-  document.querySelectorAll('.short-item').forEach(item => {
-    item.addEventListener('click', function(e) {
-      const index = this.getAttribute('data-index');
-      viewShort(parseInt(index));
-    });
-  });
 }
 
 function openShortsModal() {
@@ -486,7 +478,7 @@ function viewShort(index) {
   if (!short) return;
   
   const contentDiv = document.getElementById('viewModalContent');
-  const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22500%22%3E%3Crect fill=%22%23292f3c%22 width=%22300%22 height=%22500%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2240%22 fill=%22%23555%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E📹%3C/text%3E%3C/svg%3E';
+  const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22500%22%3E%3Crect fill=%22%23292f3c%22 width=%22300%22 height=%22500%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2218%22 fill=%22%23666%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3ENo preview%3C/text%3E%3C/svg%3E';
   
   if (short.url.includes('youtube.com') || short.url.includes('youtu.be')) {
     let videoId = '';
@@ -545,115 +537,58 @@ function handleProfile(){
   alert("Profile feature coming soon!");
 }
 
-// Setup event listeners for all buttons with proper event handling
+// Use event delegation for all interactive elements
+// This ensures clicks work on mobile Safari and dynamically created elements
+document.addEventListener('touchstart', function(e) {
+  // Force cursor pointer on touch
+  if (e.target.matches('button, .short-item, .nav span, .close-btn')) {
+    e.target.style.cursor = 'pointer';
+  }
+}, { passive: true });
+
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('button, .short-item, .nav span');
+  
+  if (!target) return;
+  
+  // Prevent default and stop propagation
+  e.preventDefault();
+  e.stopPropagation();
+  
+  // Handle all button clicks
+  if (target.id === 'createBtn') {
+    createPost();
+  } else if (target.id === 'addShortBtn') {
+    openShortsModal();
+  } else if (target.id === 'closeShortsBtn') {
+    closeShortsModal();
+  } else if (target.id === 'cancelShortsBtn') {
+    closeShortsModal();
+  } else if (target.id === 'uploadShortBtn') {
+    addShort();
+  } else if (target.id === 'closeViewBtn') {
+    closeViewModal();
+  } 
+  // Handle short item clicks with event delegation
+  else if (target.classList.contains('short-item')) {
+    const index = target.getAttribute('data-index');
+    if (index !== null) {
+      viewShort(parseInt(index));
+    }
+  }
+  // Handle navigation clicks
+  else if (target.matches('.nav span')) {
+    const navId = target.id;
+    if (navId === 'navHome') handleHome();
+    else if (navId === 'navExplore') handleExplore();
+    else if (navId === 'navCreate') handleCreate();
+    else if (navId === 'navActivity') handleActivity();
+    else if (navId === 'navProfile') handleProfile();
+  }
+}, { passive: false });
+
+// Setup initial page load
 document.addEventListener('DOMContentLoaded', function() {
-  // + Create button
-  const createBtn = document.getElementById('createBtn');
-  if (createBtn) {
-    createBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      createPost();
-    });
-  }
-  
-  // + Add Short Video button
-  const addShortBtn = document.getElementById('addShortBtn');
-  if (addShortBtn) {
-    addShortBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      openShortsModal();
-    });
-  }
-  
-  // Close shorts modal button
-  const closeShortsBtn = document.getElementById('closeShortsBtn');
-  if (closeShortsBtn) {
-    closeShortsBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeShortsModal();
-    });
-  }
-  
-  // Cancel shorts button
-  const cancelShortsBtn = document.getElementById('cancelShortsBtn');
-  if (cancelShortsBtn) {
-    cancelShortsBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeShortsModal();
-    });
-  }
-  
-  // Upload short button
-  const uploadShortBtn = document.getElementById('uploadShortBtn');
-  if (uploadShortBtn) {
-    uploadShortBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      addShort();
-    });
-  }
-  
-  // Close view modal button
-  const closeViewBtn = document.getElementById('closeViewBtn');
-  if (closeViewBtn) {
-    closeViewBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeViewModal();
-    });
-  }
-  
-  // Navigation items
-  const navHome = document.getElementById('navHome');
-  if (navHome) {
-    navHome.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      handleHome();
-    });
-  }
-  
-  const navExplore = document.getElementById('navExplore');
-  if (navExplore) {
-    navExplore.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      handleExplore();
-    });
-  }
-  
-  const navCreate = document.getElementById('navCreate');
-  if (navCreate) {
-    navCreate.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      handleCreate();
-    });
-  }
-  
-  const navActivity = document.getElementById('navActivity');
-  if (navActivity) {
-    navActivity.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      handleActivity();
-    });
-  }
-  
-  const navProfile = document.getElementById('navProfile');
-  if (navProfile) {
-    navProfile.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      handleProfile();
-    });
-  }
-  
-  // Load shorts on initial page load
   loadShorts();
 });
 </script>
