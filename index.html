@@ -413,7 +413,7 @@ function renderShorts(shorts) {
   }
   
   grid.innerHTML = shorts.map((short, index) => {
-    const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22250%22%3E%3Crect fill=%22%23292f3c%22 width=%22150%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2214%22 fill=%22%23666%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E🎬%3C/text%3E%3C/svg%3E';
+    const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22250%22%3E%3Crect fill=%22%23292f3c%22 width=%22150%22 height=%22250%22/%3E%3[...]
     return `
       <div class="short-item" onclick="viewShort(${index})">
         <img src="${short.thumbnail || placeholderSvg}" alt="${short.title}" onerror="this.src='${placeholderSvg}'">
@@ -472,17 +472,27 @@ function viewShort(index) {
   if (!short) return;
   
   const contentDiv = document.getElementById('viewModalContent');
-  const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22500%22%3E%3Crect fill=%22%23292f3c%22 width=%22300%22 height=%22500%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2224%22 fill=%22%23666%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E🎬%3C/text%3E%3C/svg%3E';
+  const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22500%22%3E%3Crect fill=%22%23292f3c%22 width=%22300%22 height=%22500%22/%3E%3Ct[...]
   
   if (short.url.includes('youtube.com') || short.url.includes('youtu.be')) {
-    const videoId = short.url.includes('youtu.be')
-      ? short.url.split('youtu.be/')[1].split('?')[0]
-      : new URL(short.url).searchParams.get('v');
-    contentDiv.innerHTML = `<iframe width="90%" style="max-width:600px;border-radius:12px;" height="500" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    let videoId = '';
+    
+    if (short.url.includes('/shorts/')) {
+      // Handle YouTube Shorts URL: youtube.com/shorts/VIDEO_ID
+      videoId = short.url.split('/shorts/')[1].split('?')[0].split('&')[0];
+    } else if (short.url.includes('youtu.be')) {
+      // Handle youtu.be/VIDEO_ID
+      videoId = short.url.split('youtu.be/')[1].split('?')[0];
+    } else {
+      // Handle youtube.com/?v=VIDEO_ID
+      videoId = new URL(short.url).searchParams.get('v');
+    }
+    
+    contentDiv.innerHTML = `<iframe width="90%" style="max-width:600px;border-radius:12px;" height="500" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autop[...]
   } else if (short.url.includes('instagram.com') || short.url.includes('tiktok.com')) {
-    contentDiv.innerHTML = `<img src="${short.thumbnail || placeholderSvg}" alt="${short.title}" style="max-width:90%;max-height:80vh;border-radius:12px;" onerror="this.src='${placeholderSvg}'">`;
+    contentDiv.innerHTML = `<img src="${short.thumbnail || placeholderSvg}" alt="${short.title}" style="max-width:90%;max-height:80vh;border-radius:12px;" onerror="this.src='${placeholderSvg}'">`[...]
   } else {
-    contentDiv.innerHTML = `<video controls style="max-width:90%;max-height:80vh;border-radius:12px;" autoplay><source src="${short.url}" type="video/mp4"><source src="${short.url}" type="video/webm">Your browser does not support the video tag.</video>`;
+    contentDiv.innerHTML = `<video controls style="max-width:90%;max-height:80vh;border-radius:12px;" autoplay><source src="${short.url}" type="video/mp4"><source src="${short.url}" type="video/w[...]
   }
   
   document.getElementById('viewModalTitle').textContent = short.title;
