@@ -72,16 +72,224 @@ button:active{transform:scale(0.98)}
 }
 .nav .active{color:#ff6848}
 .icon{font-size:24px;display:block;margin-bottom:3px}
+
+.shorts-container{
+  margin:15px;
+  padding:20px;
+  border-radius:20px;
+  background:#151923;
+  border:1px solid #292f3c;
+}
+.shorts-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:12px;
+  margin-top:15px;
+}
+.short-item{
+  position:relative;
+  border-radius:12px;
+  overflow:hidden;
+  background:#1a1f2b;
+  cursor:pointer;
+  transition:transform 0.2s ease;
+  aspect-ratio:9/16;
+  border:1px solid #292f3c;
+}
+.short-item:hover{transform:scale(1.05)}
+.short-item video,
+.short-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.short-item-overlay{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,0.8));
+  padding:8px;
+  font-size:12px;
+  max-height:50px;
+  overflow:hidden;
+}
+.short-item-title{
+  color:white;
+  font-weight:bold;
+  margin:0;
+}
+.empty-state{
+  text-align:center;
+  padding:30px 20px;
+  color:#aaa;
+}
+.empty-state p{
+  margin:10px 0;
+}
+.modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.8);
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+}
+.modal.active{
+  display:flex;
+}
+.modal-content{
+  background:#151923;
+  border-radius:20px;
+  padding:25px;
+  max-width:500px;
+  width:90%;
+  border:1px solid #292f3c;
+  max-height:90vh;
+  overflow-y:auto;
+}
+.modal-header{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:20px;
+  color:white;
+}
+.close-btn{
+  float:right;
+  font-size:28px;
+  font-weight:bold;
+  color:#aaa;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding:0;
+  width:auto;
+  transition:color 0.2s;
+}
+.close-btn:hover{color:#ff6848}
+.form-group{
+  margin-bottom:15px;
+}
+.form-group label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:bold;
+  color:#aaa;
+}
+.form-group input,
+.form-group textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #292f3c;
+  border-radius:8px;
+  background:#0b0d12;
+  color:white;
+  font-family:Arial,sans-serif;
+}
+.form-group textarea{
+  resize:vertical;
+  min-height:80px;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder{
+  color:#555;
+}
+.form-group input:focus,
+.form-group textarea:focus{
+  outline:none;
+  border-color:#ff6848;
+  box-shadow:0 0 5px rgba(255,104,72,0.3);
+}
+.form-actions{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+.form-actions button{
+  flex:1;
+}
+.btn-cancel{
+  background:#444;
+}
+.btn-cancel:hover{background:#555}
+.view-modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.95);
+  z-index:101;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+.view-modal.active{
+  display:flex;
+}
+.view-modal-close{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:none;
+  border:none;
+  color:white;
+  font-size:28px;
+  cursor:pointer;
+  width:auto;
+  padding:0;
+}
+.view-modal-close:hover{color:#ff6848}
+.view-modal video,
+.view-modal img{
+  max-width:90vw;
+  max-height:80vh;
+  border-radius:12px;
+  object-fit:contain;
+}
+.view-modal-info{
+  color:white;
+  text-align:center;
+  margin-top:15px;
+  max-width:90vw;
+}
+.view-modal-title{
+  font-weight:bold;
+  font-size:16px;
+  margin-bottom:5px;
+}
+.view-modal-description{
+  font-size:14px;
+  color:#aaa;
+  margin-top:5px;
+}
 @media (max-width: 480px){
   header{font-size:26px;padding:18px 12px 12px}
   .subtitle{font-size:15px;line-height:1.5}
   .card{margin:12px 10px;padding:18px 16px;border-radius:18px}
+  .shorts-container{margin:12px 10px;padding:18px 16px}
   h2{font-size:22px}
   p{font-size:15px;line-height:1.5}
   button{width:100%;padding:14px 18px}
   .nav{height:72px}
   .nav span{font-size:11px;line-height:1.2}
   .icon{font-size:22px}
+  .shorts-grid{
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:10px;
+  }
+  .modal-content{
+    width:95%;
+    padding:20px;
+  }
+  .form-actions{
+    flex-direction:column;
+  }
 }
 </style>
 </head>
@@ -107,15 +315,61 @@ button:active{transform:scale(0.98)}
   <p>Discover short videos, stories and posts from your ADDA.</p>
 </div>
 
-<div class="card">
+<div class="shorts-container">
   <h2>🎬 Short Videos</h2>
   <p>Watch something interesting and share your vibe.</p>
-  <button onclick="alert('Short videos coming soon!')">Watch Shorts</button>
+  <button onclick="openShortsModal()">+ Add Short Video</button>
+  <div class="shorts-grid" id="shortsGrid">
+    <div class="empty-state">
+      <p>No shorts yet. Be the first to share! 🎥</p>
+    </div>
+  </div>
 </div>
 
 <div class="card">
   <h2>📖 Stories</h2>
   <p>Share your moments with your people.</p>
+</div>
+
+<div class="modal" id="shortsModal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeShortsModal()">&times;</button>
+    <div class="modal-header">🎬 Add Short Video</div>
+    
+    <div class="form-group">
+      <label for="shortTitle">Title</label>
+      <input type="text" id="shortTitle" placeholder="Give your short a title...">
+    </div>
+    
+    <div class="form-group">
+      <label for="shortDescription">Description</label>
+      <textarea id="shortDescription" placeholder="Describe your short..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="shortURL">Video URL</label>
+      <input type="url" id="shortURL" placeholder="Paste video URL (supports MP4, WebM, or video platform links)">
+    </div>
+    
+    <div class="form-group">
+      <label for="shortThumbnail">Thumbnail URL (optional)</label>
+      <input type="url" id="shortThumbnail" placeholder="Paste image URL for thumbnail preview">
+    </div>
+    
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeShortsModal()">Cancel</button>
+      <button onclick="addShort()">Upload Short</button>
+    </div>
+  </div>
+</div>
+
+<div class="view-modal" id="viewModal">
+  <button class="view-modal-close" onclick="closeViewModal()">&times;</button>
+  <div id="viewModalContent"></div>
+  <div class="view-modal-info">
+    <div class="view-modal-title" id="viewModalTitle"></div>
+    <div class="view-modal-description" id="viewModalDescription"></div>
+  </div>
 </div>
 
 <div class="nav">
@@ -140,6 +394,99 @@ button:active{transform:scale(0.98)}
   </span>
 </div>
 <script>
+const SHORTS_STORAGE_KEY = 'adda_shorts';
+
+function loadShorts() {
+  const shorts = JSON.parse(localStorage.getItem(SHORTS_STORAGE_KEY)) || [];
+  renderShorts(shorts);
+}
+
+function renderShorts(shorts) {
+  const grid = document.getElementById('shortsGrid');
+  
+  if (shorts.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><p>No shorts yet. Be the first to share! 🎥</p></div>';
+    return;
+  }
+  
+  grid.innerHTML = shorts.map((short, index) => `
+    <div class="short-item" onclick="viewShort(${index})">
+      <img src="${short.thumbnail || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22250%22%3E%3Crect fill=%22%23292f3c%22 width=%22150%22 height=%22250%22/%3E%3Ctext x=%2275%22 y=%22125%22 font-size=%2224%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E🎬%3C/text%3E%3C/svg%3E'}" alt="${short.title}">
+      <div class="short-item-overlay">
+        <p class="short-item-title">${short.title}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openShortsModal() {
+  document.getElementById('shortsModal').classList.add('active');
+}
+
+function closeShortsModal() {
+  document.getElementById('shortsModal').classList.remove('active');
+  document.getElementById('shortTitle').value = '';
+  document.getElementById('shortDescription').value = '';
+  document.getElementById('shortURL').value = '';
+  document.getElementById('shortThumbnail').value = '';
+}
+
+function addShort() {
+  const title = document.getElementById('shortTitle').value.trim();
+  const description = document.getElementById('shortDescription').value.trim();
+  const url = document.getElementById('shortURL').value.trim();
+  const thumbnail = document.getElementById('shortThumbnail').value.trim();
+  
+  if (!title || !url) {
+    alert('Please fill in title and video URL!');
+    return;
+  }
+  
+  const shorts = JSON.parse(localStorage.getItem(SHORTS_STORAGE_KEY)) || [];
+  
+  shorts.push({
+    id: Date.now(),
+    title,
+    description,
+    url,
+    thumbnail,
+    createdAt: new Date().toLocaleString()
+  });
+  
+  localStorage.setItem(SHORTS_STORAGE_KEY, JSON.stringify(shorts));
+  renderShorts(shorts);
+  closeShortsModal();
+  alert('Short video added successfully! 🎬');
+}
+
+function viewShort(index) {
+  const shorts = JSON.parse(localStorage.getItem(SHORTS_STORAGE_KEY)) || [];
+  const short = shorts[index];
+  
+  if (!short) return;
+  
+  const contentDiv = document.getElementById('viewModalContent');
+  
+  if (short.url.includes('youtube.com') || short.url.includes('youtu.be')) {
+    const videoId = short.url.includes('youtu.be')
+      ? short.url.split('youtu.be/')[1].split('?')[0]
+      : new URL(short.url).searchParams.get('v');
+    contentDiv.innerHTML = `<iframe width="90%" style="max-width:600px;border-radius:12px;" height="500" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  } else if (short.url.includes('instagram.com') || short.url.includes('tiktok.com')) {
+    contentDiv.innerHTML = `<img src="${short.thumbnail || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22500%22%3E%3Crect fill=%22%23292f3c%22 width=%22300%22 height=%22500%22/%3E%3Ctext x=%22150%22 y=%22250%22 font-size=%2248%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 fill=%22%23aaa%22%3E🎥%3C/text%3E%3C/svg%3E'}" style="max-width:90%;max-height:80vh;border-radius:12px;object-fit:contain;">`;
+  } else {
+    contentDiv.innerHTML = `<video controls style="max-width:90%;max-height:80vh;border-radius:12px;" autoplay><source src="${short.url}" type="video/mp4"><source src="${short.url}" type="video/webm">Your browser does not support the video tag.</video>`;
+  }
+  
+  document.getElementById('viewModalTitle').textContent = short.title;
+  document.getElementById('viewModalDescription').textContent = short.description || 'No description';
+  document.getElementById('viewModal').classList.add('active');
+}
+
+function closeViewModal() {
+  document.getElementById('viewModal').classList.remove('active');
+}
+
 function createPost(){
   const caption = prompt("What do you want to share?");
   if (caption) {
@@ -166,6 +513,8 @@ function handleActivity(){
 function handleProfile(){
   alert("Profile feature coming soon!");
 }
+
+window.addEventListener('load', loadShorts);
 </script>
 </body>
 </html>
