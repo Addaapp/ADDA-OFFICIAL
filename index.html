@@ -12,6 +12,7 @@ body{
   font-family:Arial,sans-serif;
   background:#0b0d12;
   color:white;
+  padding-bottom:90px;
 }
 header{
   padding:20px;
@@ -25,6 +26,7 @@ header{
   text-align:center;
   color:#aaa;
   margin-bottom:20px;
+  padding:0 15px;
 }
 .card{
   margin:15px;
@@ -42,7 +44,11 @@ button{
   color:white;
   font-size:16px;
   font-weight:bold;
+  cursor:pointer;
+  transition:background 0.3s ease, transform 0.2s ease;
 }
+button:hover{background:#ff5533}
+button:active{transform:scale(0.98)}
 .nav{
   position:fixed;
   bottom:0;
@@ -54,14 +60,29 @@ button{
   justify-content:space-around;
   align-items:center;
   border-top:1px solid #292f3c;
+  z-index:10;
 }
 .nav span{
   color:#aaa;
   font-size:13px;
   text-align:center;
+  cursor:pointer;
+  padding:5px;
+  user-select:none;
 }
 .nav .active{color:#ff6848}
-.icon{font-size:24px;display:block}
+.icon{font-size:24px;display:block;margin-bottom:3px}
+@media (max-width: 480px){
+  header{font-size:26px;padding:18px 12px 12px}
+  .subtitle{font-size:15px;line-height:1.5}
+  .card{margin:12px 10px;padding:18px 16px;border-radius:18px}
+  h2{font-size:22px}
+  p{font-size:15px;line-height:1.5}
+  button{width:100%;padding:14px 18px}
+  .nav{height:72px}
+  .nav span{font-size:11px;line-height:1.2}
+  .icon{font-size:22px}
+}
 </style>
 </head>
 
@@ -78,9 +99,7 @@ button{
 <div class="card">
   <h2>🔥 Welcome to ADDA</h2>
   <p>Connect, create and share your world.</p>
-  <button onclick="alert('Create is working!')
-    + Create
-  </button>
+  <button onclick="createPost()">+ Create</button>
 </div>
 
 <div class="card">
@@ -91,9 +110,7 @@ button{
 <div class="card">
   <h2>🎬 Short Videos</h2>
   <p>Watch something interesting and share your vibe.</p>
-  <button onclick="alert('Short videos coming soon!')">
-    Watch Shorts
-  </button>
+  <button onclick="alert('Short videos coming soon!')">Watch Shorts</button>
 </div>
 
 <div class="card">
@@ -102,44 +119,53 @@ button{
 </div>
 
 <div class="nav">
-  <span class="active">
+  <span class="active" onclick="handleHome()">
     <span class="icon">⌂</span>Home
   </span>
 
-  <span>
+  <span onclick="handleExplore()">
     <span class="icon">🔍</span>Explore
   </span>
 
-  <span>
+  <span onclick="handleCreate()">
     <span class="icon">＋</span>Create
   </span>
 
-  <span>
+  <span onclick="handleActivity()">
     <span class="icon">♡</span>Activity
   </span>
 
-  <span>
+  <span onclick="handleProfile()">
     <span class="icon">◯</span>Profile
   </span>
 </div>
 <script>
 function createPost(){
   const caption = prompt("What do you want to share?");
-  if(caption){
+  if (caption) {
     alert("Post created successfully! ❤️");
   }
 }
-  document.querySelectorAll('.nav > span')[1].onclick = function(){
-alert("🔥 Explore is now open!");
-};
 
-document.querySelectorAll('.nav > span')[3].onclick = function(){
-alert("❤️ Activity coming soon!");
-};
+function handleHome(){
+  alert("🏠 You are on Home!");
+}
 
-document.querySelectorAll('.nav > span')[4].onclick = function(){
+function handleExplore(){
+  alert("🔥 Explore is now open!");
+}
+
+function handleCreate(){
+  createPost();
+}
+
+function handleActivity(){
+  alert("❤️ Activity coming soon!");
+}
+
+function handleProfile(){
   alert("Profile feature coming soon!");
-};
+}
 </script>
 </body>
 </html>
